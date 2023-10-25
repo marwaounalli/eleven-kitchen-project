@@ -9,6 +9,10 @@ stop: ## Stop app
 	$(DOCKER_COMPOSE) stop
 	@$(call RED,"The containers are now stopped.")
 
+restart:
+	$(DOCKER_COMPOSE)  down -v
+	$(DOCKER_COMPOSE)  up -d
+
 composer-install:
 	$(EXEC)  "compser install"
 
@@ -19,7 +23,9 @@ cc:
 	$(EXEC) "php bin/console c:c"
 
 php-sh:
-	$(DOCKER)  exec -it  back_php_1   /bin/sh
+	$(DOCKER) exec -it  back_php_1 /bin/sh
+db-sh:
+	$(DOCKER) exec -it back_database_1 psql -U eleven-kitchen -W eleven-kitchen
 
 database-init: ## Init database
 	$(MAKE) database-drop
