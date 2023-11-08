@@ -32,7 +32,7 @@ class RecipeController extends AbstractController
 
     #[Route('/recipes/{id}', name: 'recipe_get', methods: ['GET'])]
     public function get(Recipe $recipe, SerializerInterface $serializer): JsonResponse
-    {dd('r');
+    {
         return new JsonResponse(
             $serializer->serialize($recipe, 'json', ['groups' => 'getRecipes']),
             Response::HTTP_OK,
@@ -69,7 +69,7 @@ class RecipeController extends AbstractController
         $entityManager->flush();
 
         $jsonRecipe = $serializer->serialize($recipe, 'json', ['groups' => 'getRecipes']);
-        $location = $urlGenerator->generate('recipe_get', ['id' => $recipe->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $location = $urlGenerator->generate('api_recipe_get', ['id' => $recipe->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return new JsonResponse($jsonRecipe, Response::HTTP_CREATED, ["Location" => $location], true);
     }

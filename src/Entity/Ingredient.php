@@ -26,9 +26,9 @@ class Ingredient
     #[ORM\ManyToOne(inversedBy: 'ingredients')]
     private ?Recipe $recipe = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true, enumType: MeasurmentUnit::class)]
     #[Groups(['getRecipes'])]
-    private ?string $measurmentUnit = null;
+    private ?MeasurmentUnit $measurmentUnit = null;
 
     public function getId(): ?int
     {
@@ -71,12 +71,12 @@ class Ingredient
         return $this;
     }
 
-    public function getMeasurmentUnit(): ?string
+    public function getMeasurmentUnit(): ?MeasurmentUnit
     {
         return $this->measurmentUnit;
     }
 
-    public function setMeasurmentUnit(?string $measurmentUnit): static
+    public function setMeasurmentUnit(?MeasurmentUnit $measurmentUnit): static
     {
         $this->measurmentUnit = $measurmentUnit;
 

@@ -3,7 +3,9 @@
 namespace App\DataFixtures;
 
 use App\Entity\Author;
+use App\Entity\Difficulty;
 use App\Entity\Ingredient;
+use App\Entity\MeasurmentUnit;
 use App\Entity\Recipe;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -29,7 +31,7 @@ class AppFixtures extends Fixture
             $ingredient = new Ingredient();
             $ingredient->setName('Ingrédient de la recette ' . $i);
             $ingredient->setQuantity(12);
-            $ingredient->setMeasurmentUnit('gramme');
+            $ingredient->setMeasurmentUnit(MeasurmentUnit::G);
             $manager->persist($ingredient);
 
             $recipe = new Recipe();
@@ -38,6 +40,8 @@ class AppFixtures extends Fixture
             $recipe->setPublicationDate(new \DateTime());
             $recipe->addIngredient($ingredient);
             $recipe->setUser($user);
+            $recipe->setCategory('party');
+            $recipe->setDifficulty(Difficulty::EASY);
             $manager->persist($recipe);
         }
 

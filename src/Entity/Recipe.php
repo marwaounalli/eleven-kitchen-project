@@ -39,6 +39,18 @@ class Recipe
     #[Groups(['getRecipes'])]
     private ?User $user = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['getRecipes'])]
+    private ?int $duration = null;
+
+    #[ORM\Column(length: 255, nullable: true, enumType: Difficulty::class)]
+    #[Groups(['getRecipes'])]
+    private ?Difficulty $difficulty = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['getRecipes'])]
+    private ?string $category = null;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
@@ -123,6 +135,42 @@ class Recipe
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(?int $duration): static
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getDifficulty(): ?Difficulty
+    {
+        return $this->difficulty;
+    }
+
+    public function setDifficulty(?Difficulty $difficulty): static
+    {
+        $this->difficulty = $difficulty;
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
