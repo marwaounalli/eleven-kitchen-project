@@ -63,3 +63,6 @@ fixtures: ## Alias : database-fixtures-load
 purge-db:
 	$(EXEC) "bin/console doctrine:schema:drop --full-database --force"
 
+phpcs:
+	$(EXEC) "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src"
+
