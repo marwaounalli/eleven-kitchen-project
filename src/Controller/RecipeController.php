@@ -23,7 +23,7 @@ class RecipeController extends AbstractController
         $recipes = $recipeRepository->findAll();
 
         return new JsonResponse(
-            $serializer->serialize($recipes,'json', ['groups' => 'getRecipes']),
+            $serializer->serialize($recipes, 'json', ['groups' => 'getRecipes']),
             Response::HTTP_OK,
             [],
             true
@@ -42,7 +42,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/recipes/{id}', name: 'recipe_delete', methods: ['DELETE'])]
-    public function delete( Recipe $recipe, EntityManagerInterface $entityManager): JsonResponse
+    public function delete(Recipe $recipe, EntityManagerInterface $entityManager): JsonResponse
     {
         $entityManager->remove($recipe);
         $entityManager->flush();
@@ -81,10 +81,12 @@ class RecipeController extends AbstractController
         SerializerInterface $serializer,
         EntityManagerInterface $entityManager
     ): JsonResponse {
-        $recipe = $serializer->deserialize($request->getContent(),
+        $recipe = $serializer->deserialize(
+            $request->getContent(),
             Recipe::class,
             'json',
-        [AbstractNormalizer::OBJECT_TO_POPULATE => $currentRecipe]);
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $currentRecipe]
+        );
 
         $entityManager->persist($recipe);
         $entityManager->flush();
