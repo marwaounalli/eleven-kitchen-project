@@ -30,6 +30,7 @@ class Recipe
     #[Groups(['getRecipes','getUsers'])]
     private ?\DateTimeInterface $publicationDate = null;
 
+    /** @var  Collection<int, Ingredient> */
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Ingredient::class, cascade: ['persist', 'remove'])]
     #[Groups(['getRecipes'])]
     private Collection $ingredients;

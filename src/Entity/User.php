@@ -23,6 +23,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['getRecipes', 'getUsers'])]
     private ?string $email = null;
 
+    /**
+     * @var string[]
+     */
     #[ORM\Column]
     private array $roles = [];
 
@@ -40,6 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['getRecipes', 'getUsers'])]
     private ?string $lastname = null;
 
+    /** @var  Collection<int, Recipe> */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Recipe::class)]
     #[Groups(['getUsers'])]
     private Collection $recipes;
@@ -88,6 +92,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array<string> $roles
+     * @return $this
+     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;

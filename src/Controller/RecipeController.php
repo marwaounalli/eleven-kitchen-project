@@ -11,8 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use App\Entity\User;
 
 #[Route('/api', name: 'api_')]
 class RecipeController extends AbstractController
@@ -63,7 +65,9 @@ class RecipeController extends AbstractController
             return new JsonResponse($serializer->serialize($exception->getMessage(), 'json'), Response::HTTP_BAD_REQUEST, [], true);
         }
 
-        $recipe->setUser($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $recipe->setUser($user);
         $recipe->setPublicationDate(new \DateTime());
         $entityManager->persist($recipe);
         $entityManager->flush();

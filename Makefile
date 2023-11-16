@@ -66,3 +66,6 @@ purge-db:
 phpcs:
 	$(EXEC) "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src"
 
+phpstan:
+	$(EXEC) "vendor/bin/phpstan analyse src"
+

@@ -31,7 +31,6 @@ class RegistrationController extends AbstractController
         );
         $user->setPassword($hashedPassword);
         $user->setEmail($email);
-        $user->setUsername($email);
         $entityManager->persist($user);
         $entityManager->flush();
 
