@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Recipe;
 use App\Repository\RecipeRepository;
+use App\Utils\Base64FileExtractor;
+use App\Utils\UploadedBase64File;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use App\Entity\User;
@@ -57,19 +59,27 @@ class RecipeController extends AbstractController
         Request $request,
         SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        Base64FileExtractor $base64FileExtractor,
+        UploaderHelper $helper
     ): JsonResponse {
         try {
             $recipe = $serializer->deserialize($request->getContent(), Recipe::class, 'json');
         } catch (\Exception $exception) {
             return new JsonResponse($serializer->serialize($exception->getMessage(), 'json'), Response::HTTP_BAD_REQUEST, [], true);
         }
-
+        $base64 = json_decode($request->getContent())->photo;
+        $base64Image = $base64FileExtractor->extractBase64String($base64);
+        $imageFile = new UploadedBase64File($base64Image, __DIR__.'/../../public/images/recipe/' . $recipe->getTitle());
+        $recipe->setImageFile($imageFile);
         /** @var User $user */
         $user = $this->getUser();
         $recipe->setUser($user);
         $recipe->setPublicationDate(new \DateTime());
         $entityManager->persist($recipe);
+        $path = $helper->asset($recipe, 'imageFile');
+        $recipe->ImagePath($path);
+
         $entityManager->flush();
 
         $jsonRecipe = $serializer->serialize($recipe, 'json', ['groups' => 'getRecipes']);
