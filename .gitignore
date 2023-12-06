@@ -5,6 +5,19 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/public/images/recipe
 /var/
 /vendor/
+/tools/php-cs-fixer/vendor
+.php-cs-fixer.cache
+/.idea/
+
 ###< symfony/framework-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
